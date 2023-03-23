@@ -53,3 +53,10 @@ services:
       KAFKA_BROKERCONNECT: "kafka1:9092"
     depends_on:
       - kafka1
+
+networks:
+  default:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.16.57.0/24

@@ -1,0 +1,10 @@
+{
+  "type": "record",
+  "name": "PessoaDTO",
+  "namespace": "br.com.eventpoc.kafkaschemaregistrypoc.entity",
+  "fields" : [
+    {"name": "id", "type": "string"},
+    {"name": "nome", "type": "string"},
+    {"name": "cpf", "type": "int"}
+  ]
+}
