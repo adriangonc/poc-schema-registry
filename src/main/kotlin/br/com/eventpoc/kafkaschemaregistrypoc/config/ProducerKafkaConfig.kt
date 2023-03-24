@@ -1,7 +1,6 @@
 package br.com.eventpoc.kafkaschemaregistrypoc.config
 
 import org.apache.kafka.clients.admin.AdminClientConfig
-import org.apache.kafka.clients.admin.NewTopic
 import org.apache.kafka.clients.producer.ProducerConfig
 import org.apache.kafka.common.serialization.StringSerializer
 import org.springframework.beans.factory.annotation.Autowired
@@ -37,14 +36,14 @@ class ProducerKafkaConfig(
         return KafkaTemplate(producerFactory())
     }
 
-    @Bean // Possibilita criar topicos a partir do produtor
+    @Bean
     fun kafkaAdmin(): KafkaAdmin? {
         val configs = HashMap<String, Any>()
         configs[AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG] = kafkaProperties.bootstrapServers
         return KafkaAdmin(configs)
     }
 
-    @Bean //Funciona a partir do spring kafka 2.7
+    @Bean
     fun topics(): KafkaAdmin.NewTopics {
         return KafkaAdmin.NewTopics(
             TopicBuilder.name("topic-test-1").partitions(2).replicas(1).build(),
