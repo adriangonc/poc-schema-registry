@@ -1,5 +1,6 @@
 package br.com.eventpoc.kafkaschemaregistrypoc.producer
 
+import br.com.eventpoc.kafkaschemaregistrypoc.entity.PessoaDTO
 import org.apache.kafka.clients.admin.AdminClientConfig
 import org.apache.kafka.clients.producer.ProducerConfig
 import org.apache.kafka.common.serialization.StringSerializer
@@ -23,32 +24,8 @@ class ProducerKafkaConfig(
 ) {
 
     @Bean
-    fun producerFactory(): ProducerFactory<String, Any> {
-        val configProps: MutableMap<String, Any> = HashMap()
-        configProps[ProducerConfig.BOOTSTRAP_SERVERS_CONFIG] = kafkaProperties.bootstrapServers
-        configProps[ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG] = StringSerializer::class.java
-        configProps[ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG] = JsonSerializer::class.java
-        return DefaultKafkaProducerFactory(configProps)
-    }
-
-    @Bean
-    fun kafkaTemplate(): KafkaTemplate<String, Any> {
-        return KafkaTemplate(producerFactory())
-    }
-
-    @Bean
-    fun kafkaAdmin(): KafkaAdmin? {
-        val configs = HashMap<String, Any>()
-        configs[AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG] = kafkaProperties.bootstrapServers
-        return KafkaAdmin(configs)
-    }
-
-    @Bean
-    fun topics(): KafkaAdmin.NewTopics {
-        return KafkaAdmin.NewTopics(
-            TopicBuilder.name("topic-test-1").partitions(2).replicas(1).build(),
-            TopicBuilder.name("person-topic").partitions(3).replicas(2).build()
-        )
+    fun pessoaDTOTemplate(factory: ProducerFactory<String, PessoaDTO>): KafkaTemplate<String, PessoaDTO> {
+        return KafkaTemplate(factory)
     }
 
 }
