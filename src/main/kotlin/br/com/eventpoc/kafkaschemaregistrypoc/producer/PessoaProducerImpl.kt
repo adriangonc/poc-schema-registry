@@ -3,6 +3,7 @@ package br.com.eventpoc.kafkaschemaregistrypoc.producer
 
 import br.com.eventpoc.kafkaschemaregistrypoc.entity.Pessoa
 import br.com.eventpoc.kafkaschemaregistrypoc.entity.PessoaDTO
+import org.slf4j.LoggerFactory
 import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.kafka.support.KafkaHeaders
 import org.springframework.kafka.support.SendResult
@@ -17,6 +18,7 @@ import java.time.LocalDate
 class PessoaProducerImpl(
     private val pessoaTemplate: KafkaTemplate<String, PessoaDTO>
 ) {
+    private val log = LoggerFactory.getLogger(javaClass)
 
     val topicName = "Pessoa"
 
@@ -32,10 +34,10 @@ class PessoaProducerImpl(
 
         future.addCallback(object: ListenableFutureCallback<SendResult<String, PessoaDTO>> {
             override fun onSuccess(result: SendResult<String, PessoaDTO>?) {
-                println("Pessoa enviada. MessageId $eventId")
+                log.info("Pessoa enviada. MessageId $eventId")
             }
             override fun onFailure(ex: Throwable) {
-                println("Erro no envio. MessageId $eventId")
+                log.info("Erro no envio. MessageId $eventId")
             }
         })
 

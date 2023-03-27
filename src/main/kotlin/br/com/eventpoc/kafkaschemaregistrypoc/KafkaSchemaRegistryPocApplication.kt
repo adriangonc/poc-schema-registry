@@ -12,9 +12,10 @@ import java.util.Random
 class KafkaSchemaRegistryPocApplication(
 	val pessoaProducerImpl: PessoaProducerImpl
 ): ApplicationRunner{
+	//TODO Remover após testes
 	override fun run(args: ApplicationArguments?) {
-		val pessoa = Pessoa("1532", "Adriano Goncalves", 123454321)
-		pessoaProducerImpl.persist("AB1234", pessoa)
+		val pessoa = Pessoa("1532", "Adriano Goncalves", 123454)
+		pessoaProducerImpl.persist("AB12341", pessoa)
 	}
 }
 
