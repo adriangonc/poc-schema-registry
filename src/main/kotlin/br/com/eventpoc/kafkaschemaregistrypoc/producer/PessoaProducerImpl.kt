@@ -51,7 +51,7 @@ class PessoaProducerImpl(
         return MessageBuilder.withPayload(pessoaDTO)
             .setHeader("hash", pessoaDTO.hashCode())
             .setHeader("version", "1.0.0")
-            .setHeader("endOfLife", LocalDate.now().plusDays(7L))
+            .setHeader("endOfLife", LocalDate.now().plusDays(1L))
             .setHeader("type", "fct")
             .setHeader("cid", messageId)
             .setHeader(KafkaHeaders.TOPIC, topic)
