@@ -1,4 +1,4 @@
-package br.com.eventpoc.kafkaschemaregistrypoc.config
+package br.com.eventpoc.kafkaschemaregistrypoc.producer
 
 import org.apache.kafka.clients.admin.AdminClientConfig
 import org.apache.kafka.clients.producer.ProducerConfig
