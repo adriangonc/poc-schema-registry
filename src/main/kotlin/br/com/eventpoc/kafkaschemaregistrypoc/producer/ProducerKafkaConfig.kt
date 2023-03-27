@@ -18,8 +18,7 @@ import org.springframework.kafka.support.serializer.JsonSerializer
 
 @Configuration
 class ProducerKafkaConfig(
-    @Autowired
-    private val kafkaProperties : KafkaProperties
+
 
 ) {
 
