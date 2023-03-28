@@ -3,6 +3,7 @@ package br.com.eventpoc.kafkaschemaregistrypoc.producer
 
 import br.com.eventpoc.kafkaschemaregistrypoc.entity.Pessoa
 import br.com.eventpoc.kafkaschemaregistrypoc.entity.PessoaDTO
+import br.com.eventpoc.kafkaschemaregistrypoc.entity.PessoaDTO_v2
 import org.slf4j.LoggerFactory
 import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.kafka.support.KafkaHeaders
@@ -22,20 +23,21 @@ class PessoaProducerImpl(
 
     val topicName = "Pessoa"
 
-    fun persist(eventId: String, payload: Pessoa){
+    fun persist(eventId: String, payload: Pessoa) {
         val dto = createDTO(payload)
         sendPessoaEvent(eventId, dto)
     }
 
-    private fun sendPessoaEvent(eventId: String, dto: PessoaDTO) {
+    private fun sendPessoaEvent(eventId: String, dto: PessoaDTO_v2) {
         val event = createMessageWithHeaders(eventId, dto, topicName)
 
         val future: ListenableFuture<SendResult<String, PessoaDTO>> = pessoaTemplate.send(event)
 
-        future.addCallback(object: ListenableFutureCallback<SendResult<String, PessoaDTO>> {
+        future.addCallback(object : ListenableFutureCallback<SendResult<String, PessoaDTO>> {
             override fun onSuccess(result: SendResult<String, PessoaDTO>?) {
                 log.info("Pessoa enviada. MessageId $eventId")
             }
+
             override fun onFailure(ex: Throwable) {
                 log.info("Erro no envio. MessageId $eventId")
             }
@@ -43,11 +45,16 @@ class PessoaProducerImpl(
 
     }
 
-    private fun createDTO(payload: Pessoa): PessoaDTO {
-        return PessoaDTO.newBuilder().setId(payload.id).setNome(payload.nome).setCpf(payload.cpf).build()
+    private fun createDTO(payload: Pessoa): PessoaDTO_v2 {
+        return PessoaDTO_v2.newBuilder().setId(payload.id).setNome(payload.nome).setCpf(payload.cpf)
+            .setEmail(payload.email).build()
     }
 
-    private fun createMessageWithHeaders(messageId: String, pessoaDTO: PessoaDTO, topic: String): Message<PessoaDTO> {
+    private fun createMessageWithHeaders(
+        messageId: String,
+        pessoaDTO: PessoaDTO_v2,
+        topic: String
+    ): Message<PessoaDTO_v2> {
         return MessageBuilder.withPayload(pessoaDTO)
             .setHeader("hash", pessoaDTO.hashCode())
             .setHeader("version", "1.0.0")

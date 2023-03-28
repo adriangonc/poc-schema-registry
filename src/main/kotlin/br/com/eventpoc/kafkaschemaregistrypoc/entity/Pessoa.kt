@@ -5,6 +5,7 @@ import java.util.Date
 data class Pessoa(
     val id: String,
     val nome: String,
-    val cpf: Int
+    val cpf: Int,
+    val email: String
 ) {
 }
